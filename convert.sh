@@ -34,7 +34,7 @@ for DATABASE in $DATABASES ; do
     TABLES=$(echo "SELECT TABLE_NAME FROM information_schema.TABLES where TABLE_SCHEMA = '$DATABASE' and ENGINE = 'MyISAM'" | $MYSQL_COMMAND)
     for TABLE in $TABLES ; do
         echo Converting MyISAM $TABLE to InnoDB
-        echo "ALTER TABLE $TABLE ENGINE = INNODB" | $MYSQL_COMMAND $DATABASE
+        echo "SET SQL_MODE = 'ALLOW_INVALID_DATES'; ALTER TABLE $TABLE ENGINE = INNODB" | $MYSQL_COMMAND $DATABASE
     done
     if [ "x$TABLES" = "x" ] ; then
         echo No MyISAM tables found in $DATABASE database
